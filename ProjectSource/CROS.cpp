@@ -30,6 +30,9 @@ void CROS::RunAlgorithm(const string fileName, const int rowsToFile, const bool 
     ofstream resultsStream; // создаем объект класса ifstream
     resultsStream.open(fileName); // открываем файл
 
+    ofstream progressStream; // for python progress
+    progressStream.open("progress.txt")
+
     double t = 0.0;
     vector<vector<complex<double>>> B;
 
@@ -38,10 +41,10 @@ void CROS::RunAlgorithm(const string fileName, const int rowsToFile, const bool 
 
     vector<double> initY = y_;
 
-    const unsigned int iterationsForChecking = 15;
+    const unsigned int iterationsForChecking = 0; //15;
     vector<vector<double>> meanings(iterationsForChecking, vector<double>(N_, 0.0));
 
-    stepsAmount_ = FindGoodStep(B, meanings, 100.0, iterationsForChecking);
+    //stepsAmount_ = FindGoodStep(B, meanings, 100.0, iterationsForChecking);
     if (stepsAmount_ == 0) {
         cerr << "This program can't find good amount of steps." << endl;
         exit(2);
@@ -74,7 +77,7 @@ void CROS::RunAlgorithm(const string fileName, const int rowsToFile, const bool 
         }
         if (j % rowsToFile == 0) {
             for (int k = 0; k < N_; ++k) {
-                resultsStream << meanings[j-1][k] << "		";
+                resultsStream << meanings[j-1][k] << "\t";
             }
             resultsStream << endl;
         }
@@ -89,21 +92,29 @@ void CROS::RunAlgorithm(const string fileName, const int rowsToFile, const bool 
         SaveAnswer();
         t += h_;
 
+        currentProgress = static_cast<unsigned int>(i * 100 / stepsAmount_);
         if (showProgress) {
-            currentProgress = static_cast<unsigned int>(i * 100 / stepsAmount_);
             if (currentProgress != progress) {
                 cout << "\rCompleted " << currentProgress << "%     " << flush;
-                progress = currentProgress;
+                //progress = currentProgress;
             }
+        }
+        if (currentProgress != progress && currentProgress < 100) {
+            progressStream << "process$"
+            << static_cast<unsigned int>(40 + 0.6 * currentProgress)
+            << "$Run program$"
+            << currentProgress
+            << "$0$0";
+            progress = currentProgress;
         }
         if (i % rowsToFile == 0) {
             for (int k = 0; k < N_; ++k) {
-                resultsStream << y_[k] << "		";
+                resultsStream << y_[k] << "\t";
             }
             resultsStream << endl;
         }
     }
-
+    progressStream.close();
     resultsStream.close();
 }
 

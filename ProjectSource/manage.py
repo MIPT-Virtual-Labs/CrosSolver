@@ -132,7 +132,13 @@ def start():
     save_progress(get_progress_line(
         30, COMPILE_PROGRAM, 0,
     ))
-    subprocess.run('g++ -std=c++14 main.cpp CROS.cpp -fopenmp -o BB', shell=True)  # g++ main.cpp -fopenmp -o BB
+    try:
+        subprocess.run('g++ -std=c++14 main.cpp CROS.cpp -fopenmp -o BB', shell=True)  # g++ main.cpp -fopenmp -o BB
+    except Exception as e:
+        save_progress(get_progress_line(
+            30, f"Ошибка при компиляции и запуске программы: {e}", 0, status=FAILED,
+        ))
+        return
     save_progress(get_progress_line(
         35, COMPILE_PROGRAM, 100,
     ))

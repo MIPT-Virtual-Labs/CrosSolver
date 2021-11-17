@@ -16,7 +16,7 @@ using namespace std;
 class CROS {
   public:
     CROS(unsigned int _N, unsigned int _stepsAmount, double _T, vector<double> _y);
-    void RunAlgorithm(const string fileName = "OUT.txt", const int rowsToFile = 1, const bool showProgress = true);
+    void RunAlgorithm(const string fileName = "OUT.txt", const int rowsToFile = 1, const bool showProgress = false);
     void RunAdaptiveAlgorithm(const string fileName = "OUT.txt", const int rowsToFile = 1, const bool showProgress = true);
     /* == FUNCTIONS FROM Jmatrix.h == */
 
