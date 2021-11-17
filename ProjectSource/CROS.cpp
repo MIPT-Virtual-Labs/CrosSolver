@@ -41,10 +41,10 @@ void CROS::RunAlgorithm(const string fileName, const int rowsToFile, const bool 
 
     vector<double> initY = y_;
 
-    const unsigned int iterationsForChecking = 0; //15;
+    const unsigned int iterationsForChecking = 15;
     vector<vector<double>> meanings(iterationsForChecking, vector<double>(N_, 0.0));
 
-    //stepsAmount_ = FindGoodStep(B, meanings, 100.0, iterationsForChecking);
+    stepsAmount_ = FindGoodStep(B, meanings, 100.0, iterationsForChecking);
     if (stepsAmount_ == 0) {
         cerr << "This program can't find good amount of steps." << endl;
         exit(2);
