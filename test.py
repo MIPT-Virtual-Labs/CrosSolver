@@ -31,9 +31,10 @@ def process_test():
         for i in range(100):
             os.chdir(f'../')
             res = get_progress(process_token=process_token)
+            # print(res)
             status = res[STATUS]
             if status == PROCESS:
-                print(f"PROCESS TASK: {res[INFORMATION[PERCENT]]}%")
+                print(f"PROCESS TASK: {res[INFORMATION][PERCENT]}%")
             else:
                 print("|> GET STATUS:", status)
             if status == DONE:
