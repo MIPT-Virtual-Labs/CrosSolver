@@ -31,7 +31,7 @@ void CROS::RunAlgorithm(const string fileName, const int rowsToFile, const bool 
     resultsStream.open(fileName); // открываем файл
 
     ofstream progressStream; // for python progress
-    progressStream.open("progress.txt")
+    progressStream.open("progress.txt");
 
     double t = 0.0;
     vector<vector<complex<double>>> B;
