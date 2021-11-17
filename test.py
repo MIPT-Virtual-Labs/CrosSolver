@@ -1,5 +1,5 @@
 from api import create_task, get_progress
-from local_constants import TOKEN, STATUS, DONE, FAILED, ERROR, DESCRIPTION, ERRORS
+from local_constants import TOKEN, STATUS, DONE, FAILED, ERROR, DESCRIPTION, ERRORS, PROCESS, PERCENT, INFORMATION
 from time import sleep
 import os
 
@@ -27,19 +27,23 @@ def process_test():
         print(result[ERRORS])
     else:
         process_token = result[TOKEN]
-        print("GET TOKEN:", process_token)
+        print("|> GET TOKEN:", process_token)
         for i in range(100):
             os.chdir(f'../')
             res = get_progress(process_token=process_token)
             status = res[STATUS]
-            print("GET STATUS:", status)
+            if status == PROCESS:
+                print(f"PROCESS TASK: {res[INFORMATION[PERCENT]]}%")
+            else:
+                print("|> GET STATUS:", status)
             if status == DONE:
+                print(f"|> DATA LENGTH: {len(res['data'])}")
                 break
             if status == FAILED:
-                print("FAILED DESCRIPTION:", res[DESCRIPTION])
+                print("|> FAILED DESCRIPTION:", res[DESCRIPTION])
                 break
             if status == ERROR:
-                print("ERRORS:", res[ERRORS])
+                print("|> ERRORS:", res[ERRORS])
                 break
             sleep(0.35)
 
