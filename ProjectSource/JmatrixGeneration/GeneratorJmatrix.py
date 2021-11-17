@@ -19,7 +19,7 @@ def generator(code_to_power: str, y, t=0.05, steps_amount="1000", add_info="", f
     string_to_file = []
     equations = []
 
-    raise ValueError("test error")
+    # raise ValueError("test error")
 
     # print("|> Get reactions.")
 

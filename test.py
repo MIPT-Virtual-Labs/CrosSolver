@@ -37,7 +37,7 @@ def process_test():
                 break
             if status == FAILED:
                 print("FAILED DESCRIPTION:", res[DESCRIPTION])
-                # break
+                break
             if status == ERROR:
                 print("ERRORS:", res[ERRORS])
                 break
