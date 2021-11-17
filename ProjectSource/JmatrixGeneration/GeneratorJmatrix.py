@@ -4,7 +4,7 @@ import time
 import sympy as sym
 
 
-def generator(code_to_power: str, y, T=0.05, add_info="", file_name="Jmatrix.h"):
+def generator(code_to_power: str, y, t=0.05, steps_amount="1000", add_info="", file_name="Jmatrix.h"):
     N = 0
     functions = ''
     coords = ''
@@ -548,7 +548,8 @@ def generator(code_to_power: str, y, T=0.05, add_info="", file_name="Jmatrix.h")
         Print("#include <iostream>\n#include <vector>\n#include <omp.h>\n", file=text_file)
         Print("using namespace std;\n", file=text_file)
         Print(
-            f"static const unsigned int N = {N};\nstatic const double T = {T};\nstatic const unsigned int stepsAmount = static_cast<unsigned int>(T * 20000);\n",
+            f"static const unsigned int N = {N};\nstatic const double T = {t};\nstatic const unsigned int stepsAmount "
+            f"= static_cast<unsigned int>({steps_amount});\n",
             file=text_file)
         elements = ""
         for name in add_info.split(', '):

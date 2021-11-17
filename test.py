@@ -1,10 +1,12 @@
 from api import create_task, get_progress
-from constants import TOKEN, STATUS, DONE
+from local_constants import TOKEN, STATUS, DONE
 from time import sleep
 import os
 
 
 def test_1():
+    t = 0.06
+    steps_amount = 1200
     names = ["O2", "3t3x", "xhbrrv", "xgbxrz", "xfhdx"]
     masses = [0, 34, 53, 12, 65]
     equations = [
@@ -15,7 +17,7 @@ def test_1():
         "f4 = (y0-y1+y2)/(y3+y4)"
     ]
 
-    return create_task(names, masses, equations)
+    return create_task(t, steps_amount, names, masses, equations)
     # print("|> RESULT CREATE TASK [TEST 1]:", result)
 
 

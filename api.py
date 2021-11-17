@@ -5,7 +5,7 @@ import os
 from time import sleep
 from utils import get_current_dir_name, get_random_string, get_progress_line
 from checker import check_arguments
-from constants import (
+from local_constants import (
     CORRECT, STATUS, ERROR, ERRORS, DONE,
     PROJECT_SOURCE_DIR_NAME, PROGRESS_FILE,
     PROCESS, TOKEN, INFORMATION, PERCENT, TASK,
@@ -13,10 +13,12 @@ from constants import (
     FIELD, INCORRECT_PROCESS_TOKEN_DICT, DATA)
 
 
-def create_task(names, masses, equations, **kwargs):
+def create_task(t, steps_amount, names, masses, equations, **kwargs):
     """
     Create task to compute equations
 
+    :param t: float: time of work algorithm
+    :param steps_amount: int: amount of steps
     :param names: List<string>: list of names of items
     :param masses: List<float>: list of float masses
     :param equations: List<string>: list of string equations
@@ -29,7 +31,7 @@ def create_task(names, masses, equations, **kwargs):
 
     """
     # check that arguments are correct
-    arguments_information = check_arguments(names, masses, equations)
+    arguments_information = check_arguments(t, steps_amount, names, masses, equations)
     # if something is wrong return errors
     if not arguments_information[CORRECT]:
         return {
@@ -58,6 +60,7 @@ def create_task(names, masses, equations, **kwargs):
     with open(dir_name + PATH_TO_ARGUMENTS_FILE, 'w') as file:
         # names_line = ', '.join(names)
         # print(names_line)
+        file.writelines(', '.join(map(str, [t, steps_amount])) + '\n')
         file.writelines(', '.join(names) + '\n')
         file.writelines(', '.join(map(str, masses)) + '\n')
         for equation in equations:

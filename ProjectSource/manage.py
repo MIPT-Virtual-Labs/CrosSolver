@@ -9,7 +9,7 @@ from JmatrixGeneration.GeneratorJmatrix import generator
 # print("LAST PATH", sys.path)
 sys.path.append('../')
 
-from constants import PROGRESS_FILE, GENERATE_START_MEANINGS, GENERATE_JMATRIX, COMPILE_PROGRAM, RUN_PROGRAM
+from local_constants import PROGRESS_FILE, GENERATE_START_MEANINGS, GENERATE_JMATRIX, COMPILE_PROGRAM, RUN_PROGRAM
 from utils import get_progress_line
 
 
@@ -82,9 +82,12 @@ def start_generation():
     with open("JmatrixGeneration/diffs.txt", 'r') as f:
         for i, line in enumerate(f):
             if i == 0:
-                help_str = line.strip()
+                t, steps_amount = line.strip().split(', ')
                 continue
             if i == 1:
+                help_str = line.strip()
+                continue
+            if i == 2:
                 y_start = line.strip()
                 continue
             if line.strip():
@@ -103,7 +106,7 @@ def start_generation():
     save_progress(get_progress_line(
         10, GENERATE_JMATRIX, 0,
     ))
-    generator(main_code, y_str, add_info=help_str)  # Создаётся Jmatrix
+    generator(main_code, y_str, t, steps_amount, add_info=help_str)  # Создаётся Jmatrix
     save_progress(get_progress_line(
         30, GENERATE_JMATRIX, 100,
     ))

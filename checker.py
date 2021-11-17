@@ -1,5 +1,5 @@
 from utils import get_size_error
-from constants import (
+from local_constants import (
     CORRECT,
     ERRORS,
     FIELD,
@@ -22,7 +22,7 @@ def get_error_configuration(error, field):
     }
 
 
-def check_arguments(names: list, masses: list, equations: list) -> dict:
+def check_arguments(t, steps_amount: int, names: list, masses: list, equations: list) -> dict:
     if type(names) != list:
         return get_error_configuration(LIST_TYPE_ERROR, NAMES)
     if type(masses) != list:
