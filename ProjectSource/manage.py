@@ -152,9 +152,9 @@ def start():
             40, f"Ошибка при выполнении рассчетов: {e}", 0, status=FAILED,
         ))
         return
-    save_progress(get_progress_line(
-        100, RUN_PROGRAM, 100,
-    ))
+    # save_progress(get_progress_line(
+    #     100, RUN_PROGRAM, 100,
+    # ))
 
 
 if __name__ == '__main__':

@@ -31,7 +31,7 @@ void CROS::RunAlgorithm(const string fileName, const int rowsToFile, const bool 
     resultsStream.open(fileName); // открываем файл
 
     ofstream progressStream; // for python progress
-    progressStream.open("progress.txt");
+    progressStream.open("progress.txt", ios_base::out | ios_base::app);
 
     double t = 0.0;
     vector<vector<complex<double>>> B;
@@ -46,7 +46,13 @@ void CROS::RunAlgorithm(const string fileName, const int rowsToFile, const bool 
 
     stepsAmount_ = FindGoodStep(B, meanings, 100.0, iterationsForChecking);
     if (stepsAmount_ == 0) {
-        cerr << "This program can't find good amount of steps." << endl;
+        progressStream << "failed$"
+            << 40
+            << "$Количества шагов недостаточно для рассчетов: попробуйте уменьшить параметр времени и пересмотреть зависимости в уравнениях на предмет ошибок$"
+            << 0
+            << "$0$0\n";
+        progressStream.close();
+//        cerr << "This program can't find good amount of steps." << endl;
         exit(2);
     } else if (showProgress){
         cout << "Program has " << stepsAmount_ << " steps." << endl;
@@ -104,7 +110,7 @@ void CROS::RunAlgorithm(const string fileName, const int rowsToFile, const bool 
             << static_cast<unsigned int>(40 + 0.6 * currentProgress)
             << "$Run program$"
             << currentProgress
-            << "$0$0";
+            << "$0$0\n";
             progress = currentProgress;
         }
         if (i % rowsToFile == 0) {
@@ -114,8 +120,15 @@ void CROS::RunAlgorithm(const string fileName, const int rowsToFile, const bool 
             resultsStream << endl;
         }
     }
-    progressStream.close();
+
     resultsStream.close();
+
+    progressStream << "process$"
+            << 100
+            << "$Run program$"
+            << 100
+            << "$0$0\n";
+    progressStream.close();
 }
 
 
