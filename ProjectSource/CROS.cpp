@@ -106,11 +106,13 @@ void CROS::RunAlgorithm(const string fileName, const int rowsToFile, const bool 
             }
         }
         if (currentProgress != progress && currentProgress < 100) {
+            progressStream.open("progress.txt", ios_base::out | ios_base::app);
             progressStream << "process$"
             << static_cast<unsigned int>(40 + 0.6 * currentProgress)
             << "$Run program$"
             << currentProgress
             << "$0$0\n";
+            progressStream.close();
             progress = currentProgress;
         }
         if (i % rowsToFile == 0) {
@@ -124,6 +126,7 @@ void CROS::RunAlgorithm(const string fileName, const int rowsToFile, const bool 
 
     resultsStream.close();
 
+    progressStream.open("progress.txt", ios_base::out | ios_base::app);
     progressStream << "process$"
             << 100
             << "$Run program$"
