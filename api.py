@@ -133,8 +133,8 @@ def get_progress(process_token=None):
                 # shutil.rmtree(f'/{dir_name}')
 
                 try:
-                    pass
-                    #shutil.rmtree(os.getcwd())
+                    # pass
+                    shutil.rmtree(os.getcwd())
                 except Exception as delete_error:
                     print("Delete dir error:", delete_error)
                 return {

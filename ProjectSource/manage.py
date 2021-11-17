@@ -133,7 +133,7 @@ def start():
         30, COMPILE_PROGRAM, 0,
     ))
     try:
-        subprocess.run('g++ -std=c++14 main.cpp CROS.cpp -fopenmp -o BB', shell=True)  # g++ main.cpp -fopenmp -o BB
+        subprocess.run('g++ -std=c++14 main.cpp CROS.cpp -fopenmp -o CROS_PROGRAM', shell=True)  # g++ main.cpp -fopenmp -o BB
     except Exception as e:
         save_progress(get_progress_line(
             30, f"Ошибка при компиляции и запуске программы: {e}", 0, status=FAILED,
@@ -146,7 +146,7 @@ def start():
         40, RUN_PROGRAM, 0,
     ))
     try:
-        subprocess.run('./BB')
+        subprocess.run('./CROS_PROGRAM')
     except Exception as e:
         save_progress(get_progress_line(
             40, f"Ошибка при выполнении рассчетов: {e}", 0, status=FAILED,

@@ -121,7 +121,7 @@ void CROS::RunAlgorithm(const string fileName, const int rowsToFile, const bool 
             }
             resultsStream << endl;
         }
-        for (int q = 0; q < 5000000; q++) {}
+        //for (int q = 0; q < 5000000; q++) {}
     }
 
     resultsStream.close();
