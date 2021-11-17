@@ -67,7 +67,7 @@ int main() {
     string logsFile = "Logs.txt";
 
     const int worldSize = omp_get_num_procs(); // получение количества доступных вычислительных ядер
-    cout << "|> Total amount of processing cores " << worldSize << endl;
+    // cout << "|> Total amount of processing cores " << worldSize << endl;
 
     ofstream logsStream; // создаем объект класса ifstream
     logsStream.open(logsFile); // открываем файл
@@ -82,7 +82,7 @@ int main() {
     RunCROS(CrosAlgorithm, optimalNumProc, 1, fileName, logsStream, "usual");
 
 
-    cout << "You can find results in file \"" << fileName << "\" and logs in file \"" << logsFile << "\"." << endl;
+    // cout << "You can find results in file \"" << fileName << "\" and logs in file \"" << logsFile << "\"." << endl;
     return 0;
 }
 
