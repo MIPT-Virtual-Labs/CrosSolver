@@ -9,7 +9,7 @@ from JmatrixGeneration.GeneratorJmatrix import generator
 # print("LAST PATH", sys.path)
 sys.path.append('../')
 
-from local_constants import PROGRESS_FILE, GENERATE_START_MEANINGS, GENERATE_JMATRIX, COMPILE_PROGRAM, RUN_PROGRAM
+from local_constants import PROGRESS_FILE, GENERATE_START_MEANINGS, GENERATE_JMATRIX, COMPILE_PROGRAM, RUN_PROGRAM, FAILED
 from utils import get_progress_line
 
 
@@ -79,19 +79,22 @@ def start_generation():
     diff_equations = list()
     help_str = ""
     y_start = ""
-    with open("JmatrixGeneration/diffs.txt", 'r') as f:
-        for i, line in enumerate(f):
-            if i == 0:
-                t, steps_amount = line.strip().split(', ')
-                continue
-            if i == 1:
-                help_str = line.strip()
-                continue
-            if i == 2:
-                y_start = line.strip()
-                continue
-            if line.strip():
-                diff_equations.append(line.strip())
+    try:
+        with open("JmatrixGeneration/diffs.txt", 'r') as f:
+            for i, line in enumerate(f):
+                if i == 0:
+                    t, steps_amount = line.strip().split(', ')
+                    continue
+                if i == 1:
+                    help_str = line.strip()
+                    continue
+                if i == 2:
+                    y_start = line.strip()
+                    continue
+                if line.strip():
+                    diff_equations.append(line.strip())
+    except Exception as e:
+        raise ValueError(f"Ошибка при обработке начальных данных: {e}")
     n = len(diff_equations)
 
     # diff_equations += f"f{n-1} = 0" # уравнение для температуры
@@ -106,7 +109,11 @@ def start_generation():
     save_progress(get_progress_line(
         10, GENERATE_JMATRIX, 0,
     ))
-    generator(main_code, y_str, t, steps_amount, add_info=help_str)  # Создаётся Jmatrix
+    try:
+        generator(main_code, y_str, t, steps_amount, add_info=help_str)  # Создаётся Jmatrix
+    except Exception as e:
+        raise ValueError(f"Ошибка при генерировании JMatrix: {e}. "
+                         f"Скорее всего проблема в некотрректном формате вводных уравнений.")
     save_progress(get_progress_line(
         30, GENERATE_JMATRIX, 100,
     ))
@@ -115,7 +122,13 @@ def start_generation():
 def start():
     # print("CURRENT DIR:", os.getcwd())
     # os.chdir('/ProjectSource')
-    start_generation()
+    try:
+        start_generation()
+    except Exception as e:
+        save_progress(get_progress_line(
+            30, e, 0, status=FAILED,
+        ))
+        return
     save_progress(get_progress_line(
         30, COMPILE_PROGRAM, 0,
     ))
@@ -126,7 +139,13 @@ def start():
     save_progress(get_progress_line(
         40, RUN_PROGRAM, 0,
     ))
-    subprocess.run('./BB')
+    try:
+        subprocess.run('./BB')
+    except Exception as e:
+        save_progress(get_progress_line(
+            40, f"Ошибка при выполнении рассчетов: {e}", 0, status=FAILED,
+        ))
+        return
     save_progress(get_progress_line(
         100, RUN_PROGRAM, 100,
     ))

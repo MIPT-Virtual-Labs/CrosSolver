@@ -10,17 +10,26 @@ FIELD = 'field'
 CORRECT = 'correct'
 ERRORS = 'errors'
 NAMES = 'names'
+TIME = 't'
+STEPS_AMOUNT = 'steps_amount'
 MASSES = 'masses'
 EQUATIONS = 'equations'
 TOKEN = 'token'
 INFORMATION = 'information'
+DESCRIPTION = 'description'
 PERCENT = 'percent'
 TASK = 'task'
 PROCESS_TOKEN = 'process_token'
 DATA = 'data'
 
+# CRITICAL VALUES #########################
+CRITICAL_STEPS_AMOUNT = 1000000
+
 # ERRORS CONSTANTS #########################
-LIST_TYPE_ERROR = "Must be list of values"
+LIST_TYPE_ERROR = "Требуется массив значений"
+NUMBER_TIME_ERROR = "Требуется число"
+INT_STEPS_ERROR = "Требуется целое число шагов"
+TOO_MANY_STEPS_AMOUNT = f"Слишком большое число шагов [должно быть не более {CRITICAL_STEPS_AMOUNT}]"
 INVALID_PROCESS_TOKEN = "Get invalid process token"
 
 # PROCESS TASKS NAMES #####################

@@ -19,7 +19,9 @@ def generator(code_to_power: str, y, t=0.05, steps_amount="1000", add_info="", f
     string_to_file = []
     equations = []
 
-    print("|> Get reactions.")
+    raise ValueError("test error")
+
+    # print("|> Get reactions.")
 
     def Print(*args, file=''):
         for arg in args:
@@ -157,7 +159,7 @@ def generator(code_to_power: str, y, t=0.05, steps_amount="1000", add_info="", f
             return equation_list
 
 
-        print('|>>> Start finding special functions : ["exp", "log", "pow", "sqrt", "sin", "cos", "tan"]')
+        # print('|>>> Start finding special functions : ["exp", "log", "pow", "sqrt", "sin", "cos", "tan"]')
         # List of special functions to search in code
         special_functions = ["exp", "log", "pow", "sqrt", "sin", "cos", "tan"]
 
@@ -187,7 +189,7 @@ def generator(code_to_power: str, y, t=0.05, steps_amount="1000", add_info="", f
                 if local_counter != 0:
                     new_equations.append("\t\t\t" + arg_name + "=" + complex_function + ';\t//\t' + str(local_counter) + " times")
 
-        print(f'|>>> Found {total_amount_of_special_functions} special functions')
+        # print(f'|>>> Found {total_amount_of_special_functions} special functions')
 
         # Попробуем найти зависимости первых аргументов друг от друга
         # То есть, если какой-то из аргументов ссылается на другой при вычислении, то
@@ -218,7 +220,7 @@ def generator(code_to_power: str, y, t=0.05, steps_amount="1000", add_info="", f
 
         # print("T2")
 
-        print('|>>> Start finding expressions in brackets')
+        # print('|>>> Start finding expressions in brackets')
 
         expr_name = "expr"
         expr_counter = 0
@@ -286,7 +288,7 @@ def generator(code_to_power: str, y, t=0.05, steps_amount="1000", add_info="", f
         # print("\nT5")
         # print(special_equations)
 
-        print('|>>> Start finding expressions of repeated multiplications')
+        # print('|>>> Start finding expressions of repeated multiplications')
 
 
         equation_set = []
@@ -387,7 +389,7 @@ def generator(code_to_power: str, y, t=0.05, steps_amount="1000", add_info="", f
 
         #print(pair_statistics)
 
-        print(f'|>>> Found {total_amount_of_expressions} repeated multiplications')
+        # print(f'|>>> Found {total_amount_of_expressions} repeated multiplications')
 
         set_comment = f'\n\t// First groups of multiplication\n'
         for j in range(len(equation_set)):
@@ -540,7 +542,7 @@ def generator(code_to_power: str, y, t=0.05, steps_amount="1000", add_info="", f
 
     i, j = 0, 0
 
-    print("|> START differentiations")
+    # print("|> START differentiations")
     start_time = time.time()
 
     # Генерация header-файла, который мы будем использовать
@@ -559,7 +561,7 @@ def generator(code_to_power: str, y, t=0.05, steps_amount="1000", add_info="", f
         Print(f"static vector<double> yy={{{y}}};  \n", file=text_file)
         Print("void CROS::SetJacobianAndF(vector<double> &y) {\n", file=text_file)
         total_times = len(functions) * len(coords)
-        print(f"\r|>>> PROGRESS: {0}%", end='')
+        # print(f"\r|>>> PROGRESS: {0}%", end='')
         with open("Jacob.txt", "w") as jacob_file:
             for f_num, f in enumerate(functions):
                 for y_num, y in enumerate(coords):
@@ -579,11 +581,11 @@ def generator(code_to_power: str, y, t=0.05, steps_amount="1000", add_info="", f
                         Print2(f"\tJacob_[{j}][{i}] = {buff}", file=text_file)
                         print(f"\tJacob_[{j}][{i}] = {buff}", file=jacob_file)
                     i += 1
-                    print(f"\r|>>> PROGRESS: {(f_num * len(coords) + y_num + 1) * 100 // total_times}."
-                          f"{((f_num * len(coords) + y_num + 1) * 1000 // total_times) % 10}%", end='')
+                    # print(f"\r|>>> PROGRESS: {(f_num * len(coords) + y_num + 1) * 100 // total_times}."
+                    #       f"{((f_num * len(coords) + y_num + 1) * 1000 // total_times) % 10}%", end='')
                 i = 0
                 j += 1
-            print('')
+            # print('')
             # Print(f"\n    return Jacobi;\n }}", file=text_file)
             # Print(f"vector<double> funk(vector<double> &y) {{ \n vector<double> func({N});  \n", file=text_file)
             for f in functions:
@@ -600,9 +602,9 @@ def generator(code_to_power: str, y, t=0.05, steps_amount="1000", add_info="", f
                     print(f"\tf_[{i}] = {buff}", file=jacob_file)
                 i += 1
 
-        print("|> END of differentiations")
-        print(f"|> TIME (differentiations): {int(time.time() - start_time)}s")
-        print("|> START optimizations")
+        # print("|> END of differentiations")
+        # print(f"|> TIME (differentiations): {int(time.time() - start_time)}s")
+        # print("|> START optimizations")
         start_time = time.time()
 
         list_name = "args"
@@ -611,8 +613,8 @@ def generator(code_to_power: str, y, t=0.05, steps_amount="1000", add_info="", f
         #new_eq = equations
         new_eq, amount_of_arguments, amount_of_expr = find_common_elements(equations, new_arg_str=list_name)
 
-        print("|> END of optimization")
-        print(f"|> TIME (optimization): {int(time.time() - start_time)}s")
+        # print("|> END of optimization")
+        # print(f"|> TIME (optimization): {int(time.time() - start_time)}s")
 
         Print(f"\tdouble {list_name}[{amount_of_arguments}] = {{0.0}};\n", file=text_file)
         Print(f"\tdouble expr[{amount_of_expr}] = {{0.0}};\n", file=text_file)

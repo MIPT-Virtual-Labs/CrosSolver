@@ -6,8 +6,8 @@ from time import sleep
 from utils import get_current_dir_name, get_random_string, get_progress_line
 from checker import check_arguments
 from local_constants import (
-    CORRECT, STATUS, ERROR, ERRORS, DONE,
-    PROJECT_SOURCE_DIR_NAME, PROGRESS_FILE,
+    CORRECT, STATUS, ERROR, ERRORS, DONE, FAILED,
+    PROJECT_SOURCE_DIR_NAME, PROGRESS_FILE, DESCRIPTION,
     PROCESS, TOKEN, INFORMATION, PERCENT, TASK,
     TASK_CREATE_MATRIX, PATH_TO_ARGUMENTS_FILE,
     FIELD, INCORRECT_PROCESS_TOKEN_DICT, DATA)
@@ -73,7 +73,10 @@ def create_task(t, steps_amount, names, masses, equations, **kwargs):
     # os.open()
     # old_dir = os.getcwd()
     os.chdir(f'{dir_name}')
-    process = subprocess.Popen(["python3.9", f"manage.py"])
+    try:
+        process = subprocess.Popen(["python3.9", f"manage.py"])
+    except:
+        process = subprocess.Popen(["python3", f"manage.py"])
     # print("NEW PROCESS", process.pid)
     # process.stdin.write(dir_name)
 
@@ -106,7 +109,17 @@ def get_progress(process_token=None):
             for line in file:
                 pass
             last_line = line
-            percent, task, task_percent, time_left, time_spent = last_line.split('$')
+            status, percent, task, task_percent, time_left, time_spent = last_line.split('$')
+            if status == FAILED:
+                answer = {
+                    STATUS: FAILED,
+                    DESCRIPTION: task,
+                }
+                try:
+                    shutil.rmtree(os.getcwd())
+                except Exception as delete_error:
+                    print("Delete dir error:", delete_error)
+                return answer
             if int(percent) == 100:
                 result = []
                 with open('OUT.txt', 'r') as out:

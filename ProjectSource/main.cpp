@@ -14,8 +14,8 @@ void RunCROS(CROS& CrosAlgorithm, const int worldSize, const int rowsToFile,
         string& fileName, ofstream& logsStream, const string type = "usual") {
 
     omp_set_num_threads(worldSize);
-    cout << "|> Run algorithm " << endl;
-    cout << "|> Use " << worldSize << " processing cores. Write every " << rowsToFile << " lines." << endl;
+//    cout << "|> Run algorithm " << endl;
+//    cout << "|> Use " << worldSize << " processing cores. Write every " << rowsToFile << " lines." << endl;
     //logsStream << "|> Use " << worldSize << " processing cores. Write every " << rowsToFile << " lines." << endl;
 
     unsigned int start_time =  clock();
@@ -30,11 +30,11 @@ void RunCROS(CROS& CrosAlgorithm, const int worldSize, const int rowsToFile,
 
     //cout << endl << "|> DONE!" << endl;
     unsigned int totalTime = (end_time - start_time) / 1000;
-    cout << endl
-    << "|> TOTAL TIME: " << totalTime / 60 << " min "
-    << totalTime % 60 << " sec "
-    << (end_time - start_time) % 1000 << " ms "
-    << endl << endl;
+//    cout << endl
+//    << "|> TOTAL TIME: " << totalTime / 60 << " min "
+//    << totalTime % 60 << " sec "
+//    << (end_time - start_time) % 1000 << " ms "
+//    << endl << endl;
 
     logsStream << "| TIME: " << totalTime / 60 << " min "
     << totalTime % 60 << " sec "
@@ -61,7 +61,7 @@ void TestsCROS(const int worldSize, string& fileName, ofstream& logsStream) {
 
 int main() {
 
-    cout << "|> Initialization..." << endl;
+    //cout << "|> Initialization..." << endl;
 
     string fileName = "OUT.txt";
     string logsFile = "Logs.txt";
