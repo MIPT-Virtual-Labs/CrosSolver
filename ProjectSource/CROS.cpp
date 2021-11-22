@@ -518,8 +518,6 @@ void CROS::SaveAnswer() {
 	
 	z_= g_;
 	
-    
-
     for (int j = 0; j < N_; j++) {
         u_[j] = z_[j].real();
     }
@@ -531,17 +529,13 @@ void CROS::SaveAnswer() {
 
 void CROS::ParametersInitialization() {
     SetJacobianAndF(y_);
-//    Jacob_ = J_(y_);       //Подсчёт текущего значения J
-//    f_ = funk_(y_);
 
-    J1_ = MulMatrixDouble(Jacob_, -halfH_); //Подсчёт текущего значения J1
+    J1_ = MulMatrixDouble(Jacob_, -h_); //Подсчёт текущего значения J1
     J3_ = MulMatrixComplex(J1_, (1.0 + 1i) / 2.0);
 
     for (int j = 0; j < N_; j++) {
         J3_[j][j] += 1.0;
     }
-
-
 
     for (int j = 0; j < N_; j++) {					//Столбец вспомогательных функций правой части
         g_[j] = f_[j];
