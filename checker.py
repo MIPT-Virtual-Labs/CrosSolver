@@ -5,7 +5,7 @@ from utils import get_size_error
 #     FIELD,
 #     ERROR,
 #     LIST_TYPE_ERROR,
-#     MASSES,
+#     INIT_VALUES,
 #     NAMES,
 #     EQUATIONS,
 #     CORRECT_DICT
@@ -23,7 +23,10 @@ def get_error_configuration(error, field):
     }
 
 
-def check_arguments(t, steps_amount: int, names: list, masses: list, equations: list) -> dict:
+def check_arguments(t, steps_amount: int, names: list, init_values: list, equations: list) -> dict:
+    """
+    Check all arguments of the task
+    """
     if not (type(t) == int or type(t) == float):
         return get_error_configuration(C.NUMBER_TIME_ERROR, C.TIME)
     if not type(steps_amount) == int:
@@ -32,14 +35,14 @@ def check_arguments(t, steps_amount: int, names: list, masses: list, equations: 
         return get_error_configuration(C.TOO_MANY_STEPS_AMOUNT, C.STEPS_AMOUNT)
     if type(names) != list:
         return get_error_configuration(C.LIST_TYPE_ERROR, C.NAMES)
-    if type(masses) != list:
-        return get_error_configuration(C.LIST_TYPE_ERROR, C.MASSES)
+    if type(init_values) != list:
+        return get_error_configuration(C.LIST_TYPE_ERROR, C.INIT_VALUES)
     if type(equations) != list:
         return get_error_configuration(C.LIST_TYPE_ERROR, C.EQUATIONS)
 
     n = len(names)
-    if n != len(masses):
-        return get_error_configuration(get_size_error(n), C.MASSES)
+    if n != len(init_values):
+        return get_error_configuration(get_size_error(n), C.INIT_VALUES)
     if n != len(equations):
         return get_error_configuration(get_size_error(n), C.EQUATIONS)
 
