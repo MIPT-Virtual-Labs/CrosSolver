@@ -13,25 +13,70 @@ from local_constants import (
     FIELD, INCORRECT_PROCESS_TOKEN_DICT, DATA)
 
 
-def create_task(t, steps_amount, names, masses, equations, **kwargs):
+def create_task(t, steps_amount, names, init_values, equations, **kwargs):
     """
     Create task to compute equations
 
-    :param t: float: time of work algorithm
-    :param steps_amount: int: amount of steps
-    :param names: List<string>: list of names of items
-    :param masses: List<float>: list of float masses
-    :param equations: List<string>: list of string equations
-    :param kwargs: additional parameters
-    :return:
-    - status: task status (default: 'process', variants from ['process', 'error', 'done', 'failed'])
-    - token: token of process to get information about progress
-    - process: information about progress in notion:
-
+    :param t: float
+        time of work algorithm
+    :param steps_amount: int
+        amount of steps for algorithm
+    :param names: List<string>
+        names of items
+    :param init_values: List<float>
+        list of float initial values
+    :param equations: List<string>
+        list of string equations with python syntax:
+            - left parts are f_{i} for i=0..(n-1), example: f0
+            - right parts are f_i(y_{0}, ..., y_{n-1}), example: 12*(y3-y1)/(y2+y3)**3
+            - example of total equations: 
+                [
+                    "f0 = 100500*y2/y3-y4",
+                    "f1 = 12*(y3-y1)/(y2+y4)**3",
+                    "f2 = (y2+y4)*(y1+y2)/y1**3",
+                    "f3 = 12*(y3-y1)/(y2+y3)**3",
+                    "f4 = (y0-y1+y2)/(y3+y4)",
+                ]
+    :param kwargs: dict [optional]
+        additional parameters
+    
+    :return: dict with keys:
+        - status: string
+            task status from values in ['process', 'error', 'done', 'failed']
+        - token: string
+            ONLY if status == 'process'
+            token of process to get information about progress in next requests
+        - information: dict
+            ONLY if status == 'process'
+            information about current task progress with fields:
+                - percent: int
+                    number from 0 to 100: percent of total progress 
+                - task: dict
+                    information about current subtask with fields:
+                        - information: string
+                            current subtask name
+                        - percent: int
+                            number from 0 to 100: percent of progress of this subtask
+        - errors: List<dict>
+            ONLY if status == 'error'
+            every item of list is dict with fields:
+                - error: string
+                    error description
+                - field: string
+                    name of field with error format of data
+        - description: string
+            ONLY if status == 'failed'
+            description of reasons why task was failed
+        - type: string
+            ONLY if status == 'done'
+            [default: 'graph'] type of return data
+        - data: List<List<dict>>
+            ONLY if status == 'done'
+            list of lists with point's dicts
 
     """
     # check that arguments are correct
-    arguments_information = check_arguments(t, steps_amount, names, masses, equations)
+    arguments_information = check_arguments(t, steps_amount, names, init_values, equations)
     # if something is wrong return errors
     if not arguments_information[CORRECT]:
         return {
@@ -62,7 +107,7 @@ def create_task(t, steps_amount, names, masses, equations, **kwargs):
         # print(names_line)
         file.writelines(', '.join(map(str, [t, steps_amount])) + '\n')
         file.writelines(', '.join(names) + '\n')
-        file.writelines(', '.join(map(str, masses)) + '\n')
+        file.writelines(', '.join(map(str, init_values)) + '\n')
         for equation in equations:
             file.writelines(equation + '\n')
 
@@ -94,6 +139,48 @@ def create_task(t, steps_amount, names, masses, equations, **kwargs):
 
 
 def get_progress(process_token=None):
+    """
+    Get progress of task
+
+    :param process_token: string
+        token of process with user's task
+    
+    :return: dict with keys:
+        - status: string
+            task status from values in ['process', 'error', 'done', 'failed']
+        - token: string
+            ONLY if status == 'process'
+            token of process to get information about progress in next requests
+        - information: dict
+            ONLY if status == 'process'
+            information about current task progress with fields:
+                - percent: int
+                    number from 0 to 100: percent of total progress 
+                - task: dict
+                    information about current subtask with fields:
+                        - information: string
+                            current subtask name
+                        - percent: int
+                            number from 0 to 100: percent of progress of this subtask
+        - errors: List<dict>
+            ONLY if status == 'error'
+            this status can be caused by old or nonexistent process
+            every item of list is dict with fields:
+                - error: string
+                    error description
+                - field: string
+                    [default: 'process_token'] name of field with error format of data
+        - description: string
+            ONLY if status == 'failed'
+            description of reasons why task was failed
+        - type: string
+            ONLY if status == 'done'
+            [default: 'graph'] type of return data
+        - data: List<List<dict>>
+            ONLY if status == 'done'
+            list of lists with point's dicts
+
+    """
     if process_token is None:
         return INCORRECT_PROCESS_TOKEN_DICT
 
