@@ -13,7 +13,12 @@ from local_constants import (
     FIELD, INCORRECT_PROCESS_TOKEN_DICT, DATA)
 
 
-def create_task(t, steps_amount, names, init_values, equations, **kwargs):
+def create_task(
+    t = 0, 
+    steps_amount = 0, 
+    names = None, 
+    init_values = None, 
+    equations = None):
     """
     Create task to compute equations
 
