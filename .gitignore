@@ -1,3 +1,5 @@
+!requirements.txt
+
 *.txt
 .idea
 __pycache__
@@ -5,4 +7,7 @@ __pycache__
 */.idea/*
 */Jmatrix.h
 */*/Jmatrix.h
+*/*/*/Jmatrix.h
 /task_process_*
+*/task_process_*
+*task_process_*
