@@ -1,6 +1,5 @@
-!requirements.txt
-
 *.txt
+!requirements.txt
 .idea
 __pycache__
 */__pycache__/*
