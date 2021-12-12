@@ -14,11 +14,11 @@ from local_constants import (
 
 
 def create_task(
-    t = 0, 
-    steps_amount = 0, 
-    names = None, 
-    init_values = None, 
-    equations = None):
+        t=0,
+        steps_amount=0,
+        names=None,
+        init_values=None,
+        equations=None):
     """
     Create task to compute equations
 
@@ -213,10 +213,21 @@ def get_progress(process_token=None):
                     print("Delete dir error:", delete_error)
                 return answer
             if int(percent) == 100:
+                data = []
                 result = []
                 with open('OUT.txt', 'r') as out:
                     for line in out:
-                        result.append(line.strip().split('\t'))
+                        result.append(list(map(float, line.strip().split('\t'))))
+                x = list(range(len(result)))
+                for i in range(len(result[0])):
+                    y = list(map(lambda arr: arr[i], result))
+                    data.append({
+                        'x': x,
+                        'y': y,
+                        'type': 'scatter',
+                        'mode': 'lines',
+                        # 'marker': {color: '#fff'},
+                    })
                 # print("Current (1):", os.getcwd())
                 # os.chdir(f'../')
                 # print("Current (2):", os.getcwd())
@@ -232,7 +243,7 @@ def get_progress(process_token=None):
                 return {
                     STATUS: DONE,
                     'type': 'graph',
-                    DATA: result
+                    DATA: data,
                 }
             else:
                 return {
